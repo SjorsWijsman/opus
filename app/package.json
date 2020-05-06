@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/SjorsWijsman/project-tech/issues"
   },
-  "homepage": "https://github.com/SjorsWijsman/project-tech#readme"
+  "homepage": "https://github.com/SjorsWijsman/project-tech#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
