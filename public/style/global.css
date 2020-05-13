@@ -1,0 +1,105 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family-text);
+}
+
+html {
+  --color-primary: #08ADEE;
+  --color-primary-dark: #1B58B5;
+  --color-black: #29292F;
+  --color-gray-light: #EDEFF5;
+  --color-gray: #868895;
+  --color-gray-dark: #4F5160;
+  --color-white: #FFF;
+  --width-content-max: 32rem;
+  --font-size-title: calc(2.5rem + 0.5vw);
+  --font-size-header: 2rem;
+  --font-size-text-large: 1.3rem;
+  --font-size-text: 1rem;
+  --font-family-headers: 'Medula One', cursive;
+  --font-family-text: 'Montserrat', sans-serif;
+  --font-family-decorative: 'Pacifico', cursive;
+  --shadow-box: 3px 3px 6px rgba(0,0,0,0.16);
+  color: var(--color-black);
+  background-color: var(--color-gray-light);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  font-size: calc(60% + 0.8vmin);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  max-width: var(--width-content-max);
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: var(--font-size-title);
+  font-family: var(--font-family-headers);
+  font-weight: normal;
+  color: var(--color-white);
+}
+
+h2 {
+  font-size: var(--font-size-headers);
+  font-family: var(--font-family-headers);
+  font-weight: normal;
+}
+
+h3 {
+  font-size: var(--font-size-text-large);
+  font-family: var(--font-family-text);
+  font-weight: bold;
+  padding-bottom: 0.2em;
+}
+
+p, a, button {
+  font-size: 1rem;
+  font-family: var(--font-family-text);
+  font-weight: normal;
+  color: var(--color-gray-dark);
+}
+
+button {
+  background-color: var(--color-primary-dark);
+  color: var(--color-white);
+  border: none;
+  cursor: pointer;
+}
+
+header {
+  max-width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+}
+
+header a {
+  color: var(--color-white);
+  text-decoration: none;
+}
+
+main {
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  margin-top: 0rem;
+  border-radius: 1.5rem;
+  box-shadow: var(--shadow-box);
+  overflow: hidden;
+}
+
+main > * {
+  padding: 1.5rem;
+  background-color: var(--color-white);
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css2?family=Medula+One&family=Montserrat:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style/global.css">
+  <link rel="stylesheet" href="style/profile.css">
+  <title><%= title %></title>
+  <%if (opus) { %>
+    <style>
+      html {
+        background-image: url("../resources/background.png");
+      }
+    </style>
+  <% } else { %>
+    <style>
+      html {
+        background-image: url("../resources/background-gray.png");
+      }
+    </style>
+  <% } %>
+</head>
+<body>
+  <header>
+    <a href="#chat">Chat</a>
+    <h1>Profile</h1>
+    <%if (opus) { %>
+      <a href="discover-opus">Discover</a>
+    <% } else { %>
+      <a href="discover">Discover</a>
+    <% } %>
+  </header>
+  <main>
+    <section class="profile-overview">
+      <%if (opus) { %>
+        <img src="https://picsum.photos/400/400" alt="Match Image">
+      <% } else { %>
+        <img src="https://thispersondoesnotexist.com/image" alt="Match Image">
+      <% } %>      <h3>Your Name</h3>
+      <p>20</p>
+    </section>
+    <section class="opus-settings">
+      <h3>Opus</h3>
+      <p>Opus is a new feature that allows you to share your own or favourite art instead of selfies, finding matches with similar creative interests.</p>
+      <label>
+        <span>Turn on Opus: </span>
+        <%if (opus) { %>
+          <input type="checkbox" onclick="location.href='profile'" checked>
+        <% } else { %>
+          <input type="checkbox" onclick="location.href='profile-opus'">
+        <% } %>
+      </label>
+      <%if (opus) { %>
+        <button onclick="window.location.reload();">Upload your art</button>
+      <% } %>
+    </section>
+  </main>
+</body>
+</html>
