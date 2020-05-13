@@ -4,7 +4,8 @@
   "description": "Dating App for Project Tech",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "deploy": "gh-pages -d public"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
+    "gh-pages": "^2.2.0",
     "nodemon": "^2.0.3"
   }
 }

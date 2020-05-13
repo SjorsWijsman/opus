@@ -70,7 +70,7 @@ app.get('/users', function (req, res) {
 })
 
 app.get('/video', function (req, res) {
-  res.sendFile(path.join(__dirname + publicDir + '/video.mp4'));
+  res.sendFile(path.join(__dirname + publicDir + '/resources/video.mp4'));
 })
 
 app.get('/profile/:profileID', function (req, res) {
