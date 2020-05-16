@@ -1,0 +1,24 @@
+html {
+  background-image: url("../resources/background.png");
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form > label {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+form > label.row {
+  flex-direction: row;
+  align-items: baseline;
+}
+
+form > label > span {
+  padding-bottom: 0.3rem;
+}

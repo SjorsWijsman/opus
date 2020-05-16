@@ -1,0 +1,38 @@
+main .profile-overview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+main .profile-overview img {
+  position: relative;
+  width: calc(100% - 8rem);
+  height: auto;
+  border-radius: 50%;
+  background-color: var(--color-gray-light);
+  z-index: 1;
+  margin: 1rem 0;
+}
+
+main .opus-settings label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  color: var(--color-gray-dark);
+  font-weight: bold;
+}
+
+main .opus-settings label input[type=checkbox] {
+  font-size: 1rem;
+}
+main .opus-settings a {
+  text-align: center;
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: var(--color-primary-dark);
+  color: var(--color-white);
+  text-decoration: none;
+}

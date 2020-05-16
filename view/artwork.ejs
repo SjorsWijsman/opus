@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css2?family=Medula+One&family=Montserrat:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style/global.css">
+  <link rel="stylesheet" href="style/upload.css">
+  <title>Upload Art</title>
+</head>
+<body>
+  <header>
+    <a href="#chat">Chat</a>
+    <h1>Upload Art</h1>
+    <a href="profile-opus">Profile</a>
+  </header>
+  <main>
+    <form action="/artwork" method="POST" enctype="multipart/form-data">
+      <label>
+        <% if (typeof(msg) != 'undefined') { %>
+          <% if (error) { %>
+            <span style="color: var(--color-error)"><%= msg %></span>
+          <% } else { %>
+            <span><%= msg %></span>
+          <% } %>
+        <% } %>
+        <input type="file" name="artwork" accept=".jpg,.jpeg,.png">
+      </label>
+      <!-- <label>
+        <span>Title</span>
+        <input type="text" placeholder="Title of artwork">
+      </label>
+      <label>
+        <span>Artform</span>
+        <input type="text" placeholder="eg. Painting">
+      </label>
+      <label class="row">
+        <span>Own Work</span>
+        <input type="checkbox">
+      </label> -->
+      <button>Upload</button>
+    </form>
+  </main>
+</body>
+</html>

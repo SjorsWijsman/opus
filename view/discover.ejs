@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css2?family=Medula+One&family=Montserrat:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style/global.css">
+  <link rel="stylesheet" href="style/discover.css">
+  <title><%= title %></title>
+  <%if (opus) { %>
+    <style>
+      html {
+        background-image: url("../resources/background.png");
+      }
+    </style>
+  <% } else { %>
+    <style>
+      html {
+        background-image: url("../resources/background-gray.png");
+      }
+    </style>
+  <% } %>
+</head>
+<body>
+  <header>
+    <a href="#chat">Chat</a>
+    <h1>Discover</h1>
+    <%if (opus) { %>
+      <a href="profile-opus">Profile</a>
+    <% } else { %>
+      <a href="profile">Profile</a>
+    <% } %>
+  </header>
+  <main>
+    <section class="image-carousel">
+      <%if (opus) { %>
+        <img src="https://picsum.photos/400/400" alt="Match Image">
+      <% } else { %>
+        <img src="https://thispersondoesnotexist.com/image" alt="Match Image">
+      <% } %>
+    </section>
+    <section class="details">
+      <%if (opus) { %>
+        <h3>Photograph, 2018</h3>
+        <p>Favorite of: Person, 20</p>
+      <% } else { %>
+        <h3>Person, 20</h3>
+        <p>Student Communication & Multimedia Design</p>
+      <% } %>
+    </section>
+    <section class="button-box">
+      <button onclick="window.location.reload();">Skip</button>
+      <button onclick="window.location.reload();">Like</button>
+    </section>
+  </main>
+</body>
+</html>
