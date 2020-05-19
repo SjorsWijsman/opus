@@ -78,6 +78,10 @@ button {
   border-radius: 0.5rem;
 }
 
+button:hover, button:focus {
+  transform: scale(1.03);
+}
+
 input {
   padding: 0.5rem;
   border: none;

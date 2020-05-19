@@ -6,9 +6,9 @@ main .profile-overview {
 
 main .profile-overview img {
   position: relative;
-  width: calc(100% - 8rem);
-  height: auto;
-  border-radius: 50%;
+  max-width: calc(100% - 2rem);
+  max-height: 25rem;
+  border-radius: 1rem;
   background-color: var(--color-gray-light);
   z-index: 1;
   margin: 1rem 0;
@@ -35,4 +35,18 @@ main .opus-settings a {
   background-color: var(--color-primary-dark);
   color: var(--color-white);
   text-decoration: none;
+}
+
+main .opus-settings a:hover, main .opus-settings a:focus {
+  transform: scale(1.03);
+}
+
+main .opus-settings button {
+  margin: 0.5rem 0;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+main .opus-settings button.deactivate {
+  background-color: var(--color-gray-dark);
 }

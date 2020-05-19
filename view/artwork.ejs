@@ -13,7 +13,7 @@
   <header>
     <a href="#chat">Chat</a>
     <h1>Upload Art</h1>
-    <a href="profile-opus">Profile</a>
+    <a href="profile">Profile</a>
   </header>
   <main>
     <form action="/artwork" method="POST" enctype="multipart/form-data">
@@ -27,18 +27,18 @@
         <% } %>
         <input type="file" name="artwork" accept=".jpg,.jpeg,.png">
       </label>
-      <!-- <label>
+      <label>
         <span>Title</span>
-        <input type="text" placeholder="Title of artwork">
+        <input type="text" name="title" placeholder="Title of artwork">
       </label>
       <label>
         <span>Artform</span>
-        <input type="text" placeholder="eg. Painting">
+        <input type="text" name="artform" placeholder="eg. Painting">
       </label>
       <label class="row">
         <span>Own Work</span>
-        <input type="checkbox">
-      </label> -->
+        <input type="checkbox" name="ownWork">
+      </label>
       <button>Upload</button>
     </form>
   </main>

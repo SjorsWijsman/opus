@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="style/global.css">
   <link rel="stylesheet" href="style/discover.css">
   <title><%= title %></title>
-  <%if (opus) { %>
+  <%if (opus.active) { %>
     <style>
       html {
         background-image: url("../resources/background.png");
@@ -27,22 +27,18 @@
   <header>
     <a href="#chat">Chat</a>
     <h1>Discover</h1>
-    <%if (opus) { %>
-      <a href="profile-opus">Profile</a>
-    <% } else { %>
-      <a href="profile">Profile</a>
-    <% } %>
+    <a href="profile">Profile</a>
   </header>
   <main>
     <section class="image-carousel">
-      <%if (opus) { %>
+      <%if (opus.active) { %>
         <img src="https://picsum.photos/400/400" alt="Match Image">
       <% } else { %>
         <img src="https://thispersondoesnotexist.com/image" alt="Match Image">
       <% } %>
     </section>
     <section class="details">
-      <%if (opus) { %>
+      <%if (opus.active) { %>
         <h3>Photograph, 2018</h3>
         <p>Favorite of: Person, 20</p>
       <% } else { %>

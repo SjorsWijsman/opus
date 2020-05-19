@@ -1,13 +1,19 @@
 const http = require('http');
 const express = require('express');
 const multer = require('multer');
+const bodyParser = require('body-parser')
 const path = require('path');
 
 const app = express();
 const port = 3000;
+const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
+const opus = {
+  active: true,
+  artwork: undefined
+}
 
-
+app.use(urlencodedParser);
 app.use(express.static('static'));
 app.set('view engine', 'ejs');
 app.set('views', 'view');
@@ -17,12 +23,18 @@ app.listen(port, function () {
 });
 
 app.get(['/', '/homepage', '/index', '/discover'], discover)
-app.get('/discover-opus', discoverOpus)
 app.get('/profile', profile)
-app.get('/profile-opus', profileOpus)
 app.get('/artwork', artwork)
 
-app.post('/artwork', function (req, res) {
+// Activate Opus
+app.post('/profile', function (req, res) {
+  opus.active = !opus.active;
+  profile(req, res)
+})
+
+// Receive Artwork upload
+app.post('/artwork', urlencodedParser, function (req, res) {
+  console.log(req.body.artform)
   upload(req, res, (err) => {
     if (err) {
       res.render('artwork.ejs', {
@@ -34,7 +46,6 @@ app.post('/artwork', function (req, res) {
         error: false,
         msg: "Artwork succesfully updated!"
       });
-      console.log(req.file);
     }
   })
 })
@@ -82,30 +93,14 @@ function checkFileType(file, callback) {
 
 function discover(req, res) {
   let page = 'discover.ejs'
-  let pageTitle = "Generic Dating App - Discover";
-  let opusActive = false;
-  res.render(page, {title: pageTitle, opus: opusActive});
-}
-
-function discoverOpus(req, res) {
-  let page = 'discover.ejs'
-  let pageTitle = "Opus - Discover";
-  let opusActive = true;
-  res.render(page, {title: pageTitle, opus: opusActive});
+  let pageTitle = "Discover";
+  res.render(page, {title: pageTitle, opus: opus});
 }
 
 function profile(req, res) {
   let page = 'profile.ejs'
-  let pageTitle = "Generic Dating App - Profile";
-  let opusActive = false;
-  res.render(page, {title: pageTitle, opus: opusActive});
-}
-
-function profileOpus(req, res) {
-  let page = 'profile.ejs'
-  let pageTitle = "Opus - Profile";
-  let opusActive = true;
-  res.render(page, {title: pageTitle, opus: opusActive});
+  let pageTitle = "Profile";
+  res.render(page, {title: pageTitle, opus: opus});
 }
 
 function artwork(req, res) {

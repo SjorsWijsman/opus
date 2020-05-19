@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="style/global.css">
   <link rel="stylesheet" href="style/profile.css">
   <title><%= title %></title>
-  <%if (opus) { %>
+  <% if (opus.active) { %>
     <style>
       html {
         background-image: url("../resources/background.png");
@@ -26,35 +26,43 @@
   <header>
     <a href="#chat">Chat</a>
     <h1>Profile</h1>
-    <%if (opus) { %>
-      <a href="discover-opus">Discover</a>
-    <% } else { %>
-      <a href="discover">Discover</a>
-    <% } %>
+    <a href="discover">Discover</a>
   </header>
   <main>
     <section class="profile-overview">
-      <%if (opus) { %>
-        <img src="uploads/upload.png" alt="Profile Image" onclick="location.href='artwork'">
+      <% if (opus.active) { %>
+        <% if (opus.artwork) { %>
+          <img src="uploads/upload.png" alt="Your Artwork Image" onclick="location.href='artwork'">
+          <h3><%= opus.artwork.title %></h3>
+          <p>- <%= opus.artwork.artform %> -</p>
+          <% if (opus.artwork.ownWork) { %>
+            <p>A beautiful artwork created by you!</p>
+          <% } else { %>
+            <p>Your favorite work of art!</p>
+          <% } %>
+        <% } else { %>
+          <img src="resources/upload-placeholder.png" alt="Your Artwork Image" onclick="location.href='artwork'">
+          <p>Upload your favorite artwork</p>
+        <% } %>
       <% } else { %>
         <img src="resources/profile-picture.png" alt="Profile Image">
+        <h3>Your Name</h3>
+        <p>20</p>
       <% } %>
-      <h3>Your Name</h3>
-      <p>20</p>
     </section>
     <section class="opus-settings">
       <h3>Opus</h3>
       <p>Opus is a new feature that allows you to share your own or favourite art instead of selfies, finding matches with similar creative interests.</p>
-      <label>
-        <span>Turn on Opus: </span>
-        <%if (opus) { %>
-          <input type="checkbox" onclick="location.href='profile'" checked>
-        <% } else { %>
-          <input type="checkbox" onclick="location.href='profile-opus'">
-        <% } %>
-      </label>
-      <%if (opus) { %>
+
+      <% if (opus.active) { %>
+        <form action="/profile" method="POST" enctype="multipart/form-data">
+          <button class="deactivate">Deactivate Opus</button>
+        </form>
         <a href="artwork">Upload your art</a>
+      <% } else { %>
+        <form action="/profile" method="POST" enctype="multipart/form-data">
+          <button>Activate Opus</button>
+        </form>
       <% } %>
     </section>
   </main>
