@@ -40,7 +40,7 @@ app.post('/artwork', function (req, res) {
   form.on('fileBegin', (name, file) => {
     opus.artwork[name] = file.name;
     // file.path = __dirname + '/static/uploads/' + file.name;
-    file.path = __dirname + '/static/uploads/' + Date.now();
+    file.path = __dirname + '/static/uploads/' + Date.now() + file.type;
   })
   form.on('aborted', () => {
     console.error('Request aborted by the user');
