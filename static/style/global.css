@@ -16,7 +16,7 @@ html {
   --color-gray-dark: #4F5160;
   --color-white: #FFF;
   --width-content-max: 32rem;
-  --font-size-title: calc(2.5rem + 0.5vw);
+  --font-size-title: 3.5rem;
   --font-size-header: 2rem;
   --font-size-text-large: 1.3rem;
   --font-size-text: 1rem;
@@ -29,10 +29,15 @@ html {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  background-image: url("../resources/background-gray.png");
   min-height: 100vh;
   scroll-behavior: smooth;
   font-size: calc(60% + 0.8vmin);
   -webkit-text-size-adjust: 100%;
+}
+
+#opus {
+  background-image: url("../resources/background.png");
 }
 
 body {
@@ -96,14 +101,28 @@ header {
   max-width: 100%;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  padding: 0.5rem 1rem;
+  padding: 1rem 1rem;
 }
 
 header a {
   color: var(--color-white);
   text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.8rem;
+  width: 4rem;
+}
+
+header a.disabled {
+  opacity: 0.5;
+}
+
+header a img {
+  fill: var(--color-primary);
+  width: 2rem;
 }
 
 main {

@@ -1,6 +1,10 @@
 
 <!DOCTYPE html>
+<% if (opus.active) { %>
+<html lang="en" id="opus">
+<% } else { %>
 <html lang="en">
+<% } %>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,25 +14,12 @@
   <link rel="stylesheet" href="style/global.css">
   <link rel="stylesheet" href="style/discover.css">
   <title><%= title %></title>
-  <%if (opus.active) { %>
-    <style>
-      html {
-        background-image: url("../resources/background.png");
-      }
-    </style>
-  <% } else { %>
-    <style>
-      html {
-        background-image: url("../resources/background-gray.png");
-      }
-    </style>
-  <% } %>
 </head>
 <body>
   <header>
-    <a href="#chat">Chat</a>
+    <a href="#chat" class="disabled"><img src="../resources/chat.svg" alt="Chat Icon">Chat</a>
     <h1>Discover</h1>
-    <a href="profile">Profile</a>
+    <a href="profile"><img src="../resources/profile.svg" alt="Profile Icon">Profile</a>
   </header>
   <main>
     <section class="image-carousel">

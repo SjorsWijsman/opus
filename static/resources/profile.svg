@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500" height="500">
+  <g id="profile" clip-path="url(#clip-profile)">
+    <path id="Path_1" data-name="Path 1" d="M4550,475s50-100,200-100,200,100,200,100" transform="translate(-4500 -25)" fill="none" stroke="#FFF" stroke-linecap="round" stroke-width="50"/>
+    <circle id="Ellipse_1" data-name="Ellipse 1" cx="150" cy="150" r="150" transform="translate(100 50)" fill="none" stroke="#FFF" stroke-width="50"/>
+  </g>
+</svg>

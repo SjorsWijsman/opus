@@ -1,5 +1,9 @@
 <!DOCTYPE html>
+<% if (opus.active) { %>
+<html lang="en" id="opus">
+<% } else { %>
 <html lang="en">
+<% } %>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,10 +16,10 @@
 </head>
 <body>
   <header>
-    <a href="#chat">Chat</a>
-    <h1>Upload Art</h1>
-    <a href="profile">Profile</a>
-  </header>
+    <a href="#chat" class="disabled"><img src="../resources/chat.svg" alt="Chat Icon">Chat</a>
+    <h1>Artwork</h1>
+    <a href="profile"><img src="../resources/profile.svg" alt="Profile Icon">Profile</a>
+</header>
   <main>
     <form action="/artwork" method="POST" enctype="multipart/form-data">
       <label>
@@ -26,7 +30,7 @@
             <span><%= msg %></span>
           <% } %>
         <% } %>
-        <input type="file" name="artwork" accept=".jpg,.jpeg,.png">
+        <input type="file" name="image" accept=".jpg,.jpeg,.png">
       </label>
       <label>
         <span>Title</span>

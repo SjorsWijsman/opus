@@ -14,6 +14,10 @@ main .profile-overview img {
   margin: 1rem 0;
 }
 
+#opus main .profile-overview img {
+  cursor: pointer;
+}
+
 main .opus-settings label {
   display: flex;
   justify-content: space-between;

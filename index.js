@@ -1,19 +1,16 @@
 const http = require('http');
 const express = require('express');
-const multer = require('multer');
-const bodyParser = require('body-parser')
 const path = require('path');
+const formidable = require('formidable')
 
 const app = express();
 const port = process.env.PORT || 3000;
-const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 const opus = {
-  active: true,
+  active: false,
   artwork: undefined
 }
 
-app.use(urlencodedParser);
 app.use(express.static('static'));
 app.set('view engine', 'ejs');
 app.set('views', 'view');
@@ -33,20 +30,30 @@ app.post('/profile', function (req, res) {
 })
 
 // Receive Artwork upload
-app.post('/artwork', urlencodedParser, function (req, res) {
-  console.log(req.body.artform)
-  upload(req, res, (err) => {
-    if (err) {
-      res.render('artwork.ejs', {
-        error: true,
-        msg: err
-      });
-    } else {
-      res.render('artwork.ejs', {
-        error: false,
-        msg: "Artwork succesfully updated!"
-      });
-    }
+app.post('/artwork', function (req, res) {
+  let form = new formidable.IncomingForm();
+  opus.artwork = {};
+  form.parse(req);
+  form.on('field', (name, field) => {
+    opus.artwork[name] = field;
+  })
+  form.on('fileBegin', (name, file) => {
+    opus.artwork[name] = file.name;
+    // file.path = __dirname + '/static/uploads/' + file.name;
+    file.path = __dirname + '/static/uploads/' + Date.now();
+  })
+  form.on('aborted', () => {
+    console.error('Request aborted by the user');
+    opus.artwork = undefined;
+  })
+  form.on('error', (err) => {
+    console.error('Error', err);
+    opus.artwork = undefined;
+    throw err
+  })
+  form.on('end', () => {
+    console.log('Artwork succesfully updated')
+    res.redirect('./profile')
   })
 })
 
@@ -58,36 +65,6 @@ app.use(function (err, req, res, next) {
   console.error(err.stack)
   res.status(500).send('Something broke! (Error code 500)')
 })
-
-
-
-const storage = multer.diskStorage({
-  destination: './static/uploads/',
-  filename: function(req, file, callback){
-    // const fileName = file.fieldname + '-' + Date.now() + path.extname(file.originalname);
-    const fileName = "upload.png"
-    callback(null, fileName);
-  }
-});
-
-const upload = multer({
-  storage: storage,
-  limits: {fileSize: 1000000},
-  fileFilter: function(req, file, callback){
-    checkFileType(file, callback)
-  }
-}).single('artwork');
-
-function checkFileType(file, callback) {
-  const filetypes = /jpeg|jpg|png/;
-  const extname = filetypes.test(path.extname(file.originalname.toLowerCase()));
-  const mimetype = filetypes.test(file.mimetype)
-  if (extname && mimetype){
-    return callback(null, true)
-  } else {
-    callback('Error: Images Only!')
-  }
-}
 
 
 
@@ -107,7 +84,7 @@ function artwork(req, res) {
   let page = 'artwork.ejs';
   let msg = "Input Artwork Image File";
   let error = false;
-  res.render(page, {msg: msg, error: error})
+  res.render(page, {msg: msg, opus: opus, error: error})
 }
 
 
