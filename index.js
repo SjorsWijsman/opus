@@ -69,18 +69,28 @@ app.use(function(err, req, res, next) {
 function discover(req, res) {
   let page = 'discover.ejs';
   let pageTitle = 'Discover';
-  res.render(page, {title: pageTitle, opus: opus});
+  res.render(page, {
+    title: pageTitle,
+    opus: opus,
+  });
 }
 
 function profile(req, res) {
   let page = 'profile.ejs';
   let pageTitle = 'Profile';
-  res.render(page, {title: pageTitle, opus: opus});
+  res.render(page, {
+    title: pageTitle,
+    opus: opus,
+  });
 }
 
 function artwork(req, res) {
   let page = 'artwork.ejs';
   let msg = 'Input Artwork Image File';
   let error = false;
-  res.render(page, {msg: msg, opus: opus, error: error});
+  res.render(page, {
+    msg: msg,
+    opus: opus,
+    error: error,
+  });
 }
