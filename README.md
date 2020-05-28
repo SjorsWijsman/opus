@@ -1,8 +1,8 @@
 # Opus
 Opus is a dating app feature that matches people through creative expression, created for HvA CMD course Project: Tech.
 
-## Prototype
-Static prototype allows user to toggle Opus through profile settings.
+## Live Preview
+Live Preview at https://project-tech-opus.herokuapp.com/
 
 ## Local Setup
 _With [npm](https://www.npmjs.com/get-npm) installed, open terminal at root folder and run the following commands:_  
