@@ -67,14 +67,14 @@ h3 {
   padding-bottom: 0.2em;
 }
 
-p, a, button {
+p, a, button, input[type="submit"] {
   font-size: 1rem;
   font-family: var(--font-family-text);
   font-weight: normal;
   color: var(--color-gray-dark);
 }
 
-button {
+button, input[type="submit"] {
   background-color: var(--color-primary-dark);
   color: var(--color-white);
   border: none;
@@ -83,7 +83,7 @@ button {
   border-radius: 0.5rem;
 }
 
-button:hover, button:focus {
+button:hover, button:focus, input[type="submit"]:hover, input[type="submit"]:focus {
   transform: scale(1.03);
 }
 

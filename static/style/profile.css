@@ -45,12 +45,13 @@ main .opus-settings a:hover, main .opus-settings a:focus {
   transform: scale(1.03);
 }
 
-main .opus-settings button {
+main .opus-settings input[type="submit"] {
+  border-color: var(--color-white);
   margin: 0.5rem 0;
   width: 100%;
   margin-top: 1rem;
 }
 
-main .opus-settings button.deactivate {
+main .opus-settings input[type="submit"].deactivate {
   background-color: var(--color-gray-dark);
 }

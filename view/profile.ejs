@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<% if (opus.active) { %>
+<% if (userInfo.opusActive) { %>
 <html lang="en" id="opus">
 <% } else { %>
 <html lang="en">
@@ -22,12 +22,12 @@
 </header>
   <main>
     <section class="profile-overview">
-      <% if (opus.active) { %>
-        <% if (opus.artwork) { %>
-          <img src="uploads/<%= opus.artwork.image %>" alt="Your Artwork Image" onclick="location.href='artwork'">
-          <h3><%= opus.artwork.title %></h3>
-          <p>- <%= opus.artwork.artform %> -</p>
-          <% if (opus.artwork.ownWork) { %>
+      <% if (userInfo.opusActive) { %>
+        <% if (userInfo.artwork) { %>
+          <img src="uploads/<%= userInfo.artwork.image %>" alt="Your Artwork Image" onclick="location.href='artwork'">
+          <h3><%= userInfo.artwork.title %></h3>
+          <p>- <%= userInfo.artwork.artform %> -</p>
+          <% if (userInfo.artwork.ownWork) { %>
             <p>A beautiful artwork created by you!</p>
           <% } else { %>
             <p>Your favorite work of art!</p>
@@ -46,14 +46,14 @@
       <h3>Opus</h3>
       <p>Opus is a new feature that allows you to share your own or favourite art instead of selfies, finding matches with similar creative interests.</p>
 
-      <% if (opus.active) { %>
+      <% if (userInfo.opusActive) { %>
         <form action="/profile" method="POST" enctype="multipart/form-data">
-          <button class="deactivate">Deactivate Opus</button>
+          <input class="deactive" type="submit" name="false" value="Deactivate Opus">
         </form>
         <a href="artwork">Upload your art</a>
       <% } else { %>
         <form action="/profile" method="POST" enctype="multipart/form-data">
-          <button>Activate Opus</button>
+          <input type="submit" name="true" value="Activate Opus">
         </form>
       <% } %>
     </section>

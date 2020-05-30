@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<% if (opus.active) { %>
+<% if (userInfo.opusActive) { %>
 <html lang="en" id="opus">
 <% } else { %>
 <html lang="en">
@@ -23,14 +23,14 @@
   </header>
   <main>
     <section class="image-carousel">
-      <%if (opus.active) { %>
+      <%if (userInfo.opusActive) { %>
         <img src="https://picsum.photos/400/400" alt="Match Image">
       <% } else { %>
         <img src="https://thispersondoesnotexist.com/image" alt="Match Image">
       <% } %>
     </section>
     <section class="details">
-      <%if (opus.active) { %>
+      <%if (userInfo.opusActive) { %>
         <h3>Photograph, 2018</h3>
         <p>Favorite of: Person, 20</p>
       <% } else { %>
