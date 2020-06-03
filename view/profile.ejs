@@ -25,7 +25,7 @@
       <% if (userInfo.opusActive) { %>
         <% if (userInfo.artwork) { %>
           <img src="uploads/<%= userInfo.artwork.image %>" alt="Your Artwork Image" onclick="location.href='artwork'">
-          <h3><%= userInfo.artwork.title %></h3>
+          <h3><a href="set-user"><%= userInfo.userName %></a> - <%= userInfo.artwork.title %></h3>
           <p>- <%= userInfo.artwork.artform %> -</p>
           <% if (userInfo.artwork.ownWork) { %>
             <p>A beautiful artwork created by you!</p>
@@ -38,7 +38,7 @@
         <% } %>
       <% } else { %>
         <img src="resources/profile-picture.png" alt="Profile Image">
-        <h3>Your Name</h3>
+        <h3><a href="set-user"><%= userInfo.userName %></a></h3>
         <p>20</p>
       <% } %>
     </section>

@@ -18,6 +18,12 @@ main .profile-overview img {
   cursor: pointer;
 }
 
+main .profile-overview h3 a {
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+}
+
 main .opus-settings label {
   display: flex;
   justify-content: space-between;

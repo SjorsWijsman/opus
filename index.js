@@ -9,8 +9,9 @@ const dbuser = process.env.DB_USER;
 const dbpassword = process.env.DB_PASS;
 const dbname = process.env.DB_NAME;
 
-let userName = 'user1';
-let userInfo = {};
+let userInfo = {
+  userName: 'user0',
+};
 
 const MongoClient = mongodb.MongoClient;
 const uri = `mongodb+srv://${dbuser}:${dbpassword}@${dbname}.mongodb.net/test?retryWrites=true&w=majority`;
@@ -19,24 +20,24 @@ const options = {
   useUnifiedTopology: true,
 };
 
-function getUserInfo() {
+function getUserInfo(redirect = null) {
   MongoClient.connect(uri, options, function(err, client) {
     if (err) throw err;
-    const query = { userName: userName };
+    const query = { userName: userInfo.userName };
     client.db('opus').collection('users').find(query).toArray(function(err, result) {
       if (err) throw err;
       userInfo = result[0];
       client.close();
+      if (redirect) redirect;
     });
   });
 }
-getUserInfo();
 
 function setUserInfo(redirect = null) {
   MongoClient.connect(uri, options, function(err, client) {
     if (err) throw err;
     client.db('opus').collection('users').updateOne(
-      { userName: userName },
+      { userName: userInfo.userName },
       { $set: userInfo },
       { upsert: true },
       function(err) {
@@ -62,53 +63,14 @@ app.listen(port, function() {
 app.get(['/', '/homepage', '/index', '/discover'], discover);
 app.get('/profile', profile);
 app.get('/artwork', artwork);
+app.get('/set-user', setUser);
 
+// Set user
+app.post('/set-user', updateUser);
 // Activate Opus Mode
-app.post('/profile', function(req, res) {
-  let form = new formidable.IncomingForm();
-  form.parse(req);
-  form.on('field', function(name, field) {
-    if (name === 'true') {
-      userInfo.opusActive = true;
-    } else {
-      userInfo.opusActive = false;
-    }
-  });
-  form.on('end', function() {
-    console.log(userInfo);
-    setUserInfo(profile(req, res));
-  });
-});
-
+app.post('/profile', setOpusMode);
 // Receive Artwork Upload
-app.post('/artwork', function(req, res) {
-  let form = new formidable.IncomingForm();
-  let upload = {};
-  form.parse(req);
-  form.on('field', function(name, field) {
-    upload[name] = field;
-  });
-  form.on('fileBegin', function(name, file) {
-    file.name = 'img' + Date.now() + '.' + file.type.split('/')[1];
-    file.path = __dirname + '/static/uploads/' + file.name;
-    upload[name] = file.name;
-  });
-  form.on('aborted', function() {
-    console.error('Request aborted by the user');
-    upload = undefined;
-  });
-  form.on('error', function(err) {
-    console.error('Error', err);
-    upload = undefined;
-    throw err;
-  });
-  form.on('end', function() {
-    userInfo.artwork = upload;
-    setUserInfo();
-    console.log('Artwork succesfully updated');
-    res.redirect('./profile');
-  });
-});
+app.post('/artwork', uploadArtwork);
 
 // Error functions
 app.use(function(req, res, next) {
@@ -131,7 +93,7 @@ function discover(req, res) {
 }
 
 function profile(req, res) {
-  getUserInfo();
+  getUserInfo(req);
   let page = 'profile.ejs';
   let pageTitle = 'Profile';
   res.render(page, {
@@ -148,5 +110,70 @@ function artwork(req, res) {
     msg: msg,
     userInfo: userInfo,
     error: error,
+  });
+}
+
+function setUser(req, res) {
+  let page = 'set-user.ejs';
+  let pageTitle = 'Set User';
+  res.render(page, {
+    title: pageTitle,
+    userInfo: userInfo,
+  });
+}
+
+// Post functions
+function updateUser(req, res) {
+  let form = new formidable.IncomingForm();
+  form.parse(req);
+  form.on('field', function(name, value) {
+    userInfo.userName = value;
+  });
+  form.on('end', function() {
+    getUserInfo(profile(req, res));
+  });
+}
+
+function setOpusMode(req, res) {
+  let form = new formidable.IncomingForm();
+  form.parse(req);
+  form.on('field', function(name, value) {
+    if (name === 'true') {
+      userInfo.opusActive = true;
+    } else {
+      userInfo.opusActive = false;
+    }
+  });
+  form.on('end', function() {
+    setUserInfo(profile(req, res));
+  });
+}
+
+function uploadArtwork(req, res) {
+  let form = new formidable.IncomingForm();
+  let upload = {};
+  form.parse(req);
+  form.on('field', function(name, value) {
+    upload[name] = value;
+  });
+  form.on('fileBegin', function(name, file) {
+    file.name = 'img' + Date.now() + '.' + file.type.split('/')[1];
+    file.path = __dirname + '/static/uploads/' + file.name;
+    upload[name] = file.name;
+  });
+  form.on('aborted', function() {
+    console.error('Request aborted by the user');
+    upload = undefined;
+  });
+  form.on('error', function(err) {
+    console.error('Error', err);
+    upload = undefined;
+    throw err;
+  });
+  form.on('end', function() {
+    userInfo.artwork = upload;
+    setUserInfo();
+    console.log('Artwork succesfully updated');
+    res.redirect('./profile');
   });
 }
