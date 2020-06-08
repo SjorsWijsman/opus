@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const session = require('express-session');
 const formidable = require('formidable');
 const mongodb = require('mongodb');
 
@@ -24,10 +25,8 @@ MongoClient.connect(uri, options, function(err, client) {
   }
 });
 
-let userName = 'user0';
-
-function getUserInfo(callback) {
-  const query = { userName: userName };
+function getUserInfo(req, callback) {
+  const query = { userName: req.session.userName };
   db.collection('users').find(query).toArray(done);
   function done(err, data) {
     if (err) throw err;
@@ -38,9 +37,9 @@ function getUserInfo(callback) {
   };
 };
 
-function updateUserInfo(update, callback) {
+function updateUserInfo(req, update, callback) {
   db.collection('users').updateOne(
-    { userName: userName },
+    { userName: req.session.userName },
     { $set: update },
     { upsert: true },
     done,
@@ -57,6 +56,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.static('static'));
+app.use(session({ secret: 'ikwilkaas' }));
 app.set('view engine', 'ejs');
 app.set('views', 'view');
 
@@ -88,7 +88,8 @@ app.use(function(err, req, res, next) {
 
 // Render functions
 function discover(req, res) {
-  getUserInfo(function(result) {
+  if (!req.session.userName) req.session.userName = 'user0';
+  getUserInfo(req, function(result) {
     let page = 'discover.ejs';
     let pageTitle = 'Discover';
     console.log(result);
@@ -100,7 +101,8 @@ function discover(req, res) {
 }
 
 function profile(req, res) {
-  getUserInfo(function(result) {
+  if (!req.session.userName) req.session.userName = 'user0';
+  getUserInfo(req, function(result) {
     let page = 'profile.ejs';
     let pageTitle = 'Profile';
     res.render(page, {
@@ -111,7 +113,8 @@ function profile(req, res) {
 }
 
 function artwork(req, res) {
-  getUserInfo(function(result) {
+  if (!req.session.userName) req.session.userName = 'user0';
+  getUserInfo(req, function(result) {
     let page = 'artwork.ejs';
     let msg = 'Input Artwork Image File';
     let error = false;
@@ -124,7 +127,8 @@ function artwork(req, res) {
 }
 
 function setUser(req, res) {
-  getUserInfo(function(result) {
+  if (!req.session.userName) req.session.userName = 'user0';
+  getUserInfo(req, function(result) {
     let page = 'set-user.ejs';
     let pageTitle = 'Set User';
     res.render(page, {
@@ -139,7 +143,7 @@ function changeUser(req, res) {
   let form = new formidable.IncomingForm();
   form.parse(req);
   form.on('field', function(name, value) {
-    userName = value;
+    req.session.userName = value;
   });
   form.on('end', function() {
     res.redirect('./profile');
@@ -158,7 +162,7 @@ function setOpusMode(req, res) {
     }
   });
   form.on('end', function() {
-    updateUserInfo({ opusActive: opusActive }, function() {
+    updateUserInfo(req, { opusActive: opusActive }, function() {
       console.log('Opus mode succesfully updated. Opus: ' + opusActive);
       res.redirect('./profile');
     });
@@ -187,7 +191,7 @@ function uploadArtwork(req, res) {
     throw err;
   });
   form.on('end', function() {
-    updateUserInfo({ artwork: artwork }, function() {
+    updateUserInfo(req, { artwork: artwork }, function() {
       console.log('Artwork succesfully updated');
       res.redirect('./profile');
     });
