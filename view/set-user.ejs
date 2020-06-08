@@ -23,10 +23,14 @@
   <main>
     <form action="/set-user" method="POST">
       <select name="user" onchange="this.form.submit()">
-        <option value="user0">User 0 (default)</option>
-        <option value="user1">User 1</option>
-        <option value="user2">User 2</option>
-        <option value="user3">User 3</option>
+        <%
+        var users = ['user0', 'user1', 'user2', 'user3'];
+        for ( user of users )
+        {
+            var selected = user === userInfo.userName ? "selected" : "";
+            %><option value="<%= user %>" <%= selected %>><%= user %></option><%
+        }
+        %>
       </select>
       <button>Change User</button>
     </form>

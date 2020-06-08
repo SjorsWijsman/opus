@@ -9,45 +9,49 @@ const dbuser = process.env.DB_USER;
 const dbpassword = process.env.DB_PASS;
 const dbname = process.env.DB_NAME;
 
-let userInfo = {
-  userName: 'user0',
-};
-
 const MongoClient = mongodb.MongoClient;
 const uri = `mongodb+srv://${dbuser}:${dbpassword}@${dbname}.mongodb.net/test?retryWrites=true&w=majority`;
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 };
+let db = null;
+MongoClient.connect(uri, options, function(err, client) {
+  if (err) throw err;
+  else {
+    db = client.db('opus');
+    console.log('Succesfully connected to db');
+  }
+});
 
-function getUserInfo(redirect = null) {
-  MongoClient.connect(uri, options, function(err, client) {
-    if (err) throw err;
-    const query = { userName: userInfo.userName };
-    client.db('opus').collection('users').find(query).toArray(function(err, result) {
-      if (err) throw err;
-      userInfo = result[0];
-      client.close();
-      if (redirect) redirect;
-    });
-  });
-}
+let userName = 'user0';
 
-function setUserInfo(redirect = null) {
-  MongoClient.connect(uri, options, function(err, client) {
+function getUserInfo(callback) {
+  const query = { userName: userName };
+  db.collection('users').find(query).toArray(done);
+  function done(err, data) {
     if (err) throw err;
-    client.db('opus').collection('users').updateOne(
-      { userName: userInfo.userName },
-      { $set: userInfo },
-      { upsert: true },
-      function(err) {
-        client.close();
-        if (err) throw err;
-        if (redirect) redirect;
-      },
-    );
-  });
-}
+    else {
+      console.log(data);
+      callback(data[0]);
+    }
+  };
+};
+
+function updateUserInfo(update, callback) {
+  db.collection('users').updateOne(
+    { userName: userName },
+    { $set: update },
+    { upsert: true },
+    done,
+  );
+  function done(err) {
+    if (err) throw err;
+    else {
+      callback();
+    }
+  }
+};
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -66,7 +70,7 @@ app.get('/artwork', artwork);
 app.get('/set-user', setUser);
 
 // Set user
-app.post('/set-user', updateUser);
+app.post('/set-user', changeUser);
 // Activate Opus Mode
 app.post('/profile', setOpusMode);
 // Receive Artwork Upload
@@ -84,96 +88,108 @@ app.use(function(err, req, res, next) {
 
 // Render functions
 function discover(req, res) {
-  let page = 'discover.ejs';
-  let pageTitle = 'Discover';
-  res.render(page, {
-    title: pageTitle,
-    userInfo: userInfo,
+  getUserInfo(function(result) {
+    let page = 'discover.ejs';
+    let pageTitle = 'Discover';
+    console.log(result);
+    res.render(page, {
+      title: pageTitle,
+      userInfo: result,
+    });
   });
 }
 
 function profile(req, res) {
-  getUserInfo(req);
-  let page = 'profile.ejs';
-  let pageTitle = 'Profile';
-  res.render(page, {
-    title: pageTitle,
-    userInfo: userInfo,
+  getUserInfo(function(result) {
+    let page = 'profile.ejs';
+    let pageTitle = 'Profile';
+    res.render(page, {
+      title: pageTitle,
+      userInfo: result,
+    });
   });
 }
 
 function artwork(req, res) {
-  let page = 'artwork.ejs';
-  let msg = 'Input Artwork Image File';
-  let error = false;
-  res.render(page, {
-    msg: msg,
-    userInfo: userInfo,
-    error: error,
+  getUserInfo(function(result) {
+    let page = 'artwork.ejs';
+    let msg = 'Input Artwork Image File';
+    let error = false;
+    res.render(page, {
+      msg: msg,
+      userInfo: result,
+      error: error,
+    });
   });
 }
 
 function setUser(req, res) {
-  let page = 'set-user.ejs';
-  let pageTitle = 'Set User';
-  res.render(page, {
-    title: pageTitle,
-    userInfo: userInfo,
+  getUserInfo(function(result) {
+    let page = 'set-user.ejs';
+    let pageTitle = 'Set User';
+    res.render(page, {
+      title: pageTitle,
+      userInfo: result,
+    });
   });
 }
 
 // Post functions
-function updateUser(req, res) {
+function changeUser(req, res) {
   let form = new formidable.IncomingForm();
   form.parse(req);
   form.on('field', function(name, value) {
-    userInfo.userName = value;
+    userName = value;
   });
   form.on('end', function() {
-    getUserInfo(profile(req, res));
+    res.redirect('./profile');
   });
 }
 
 function setOpusMode(req, res) {
   let form = new formidable.IncomingForm();
+  let opusActive = false;
   form.parse(req);
   form.on('field', function(name, value) {
     if (name === 'true') {
-      userInfo.opusActive = true;
+      opusActive = true;
     } else {
-      userInfo.opusActive = false;
+      opusActive = false;
     }
   });
   form.on('end', function() {
-    setUserInfo(profile(req, res));
+    updateUserInfo({ opusActive: opusActive }, function() {
+      console.log('Opus mode succesfully updated. Opus: ' + opusActive);
+      res.redirect('./profile');
+    });
   });
 }
 
 function uploadArtwork(req, res) {
   let form = new formidable.IncomingForm();
-  let upload = {};
+  let artwork = {};
   form.parse(req);
   form.on('field', function(name, value) {
-    upload[name] = value;
+    artwork[name] = value;
   });
   form.on('fileBegin', function(name, file) {
     file.name = 'img' + Date.now() + '.' + file.type.split('/')[1];
     file.path = __dirname + '/static/uploads/' + file.name;
-    upload[name] = file.name;
+    artwork[name] = file.name;
   });
   form.on('aborted', function() {
     console.error('Request aborted by the user');
-    upload = undefined;
+    artwork = undefined;
   });
   form.on('error', function(err) {
     console.error('Error', err);
-    upload = undefined;
+    artwork = undefined;
     throw err;
   });
   form.on('end', function() {
-    userInfo.artwork = upload;
-    setUserInfo();
-    console.log('Artwork succesfully updated');
-    res.redirect('./profile');
+    updateUserInfo({ artwork: artwork }, function() {
+      console.log('Artwork succesfully updated');
+      res.redirect('./profile');
+    });
   });
 }
