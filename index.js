@@ -2,8 +2,9 @@
 
 const express = require('express');
 const session = require('express-session');
-const formidable = require('formidable');
+const MongoDBStore = require('connect-mongodb-session')(session);
 const mongodb = require('mongodb');
+const formidable = require('formidable');
 
 require('dotenv').config();
 const dbuser = process.env.DB_USER;
@@ -23,6 +24,11 @@ MongoClient.connect(uri, options, function(err, client) {
     db = client.db('opus');
     console.log('Succesfully connected to db');
   }
+});
+const store = new MongoDBStore({
+  uri: uri,
+  databaseName: 'opus',
+  collection: 'sessions',
 });
 
 function getUserInfo(req, callback) {
@@ -55,7 +61,15 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.static('static'));
-app.use(session({ secret: 'ikwilkaas', resave: true, saveUninitialized: false }));
+app.use(session({
+  secret: 'ikwilkaas',
+  resave: true,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
+  store: store,
+}));
 app.set('view engine', 'ejs');
 app.set('views', 'view');
 
