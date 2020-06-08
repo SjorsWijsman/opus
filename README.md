@@ -1,4 +1,4 @@
-# 🎨 Opus
+# Opus
 Opus is a feature for dating apps that allows people to match through creative expression, created for HvA CMD course Project: Tech. Opus allows users to toggle to a version of the dating app where users can upload their own or their favourite artwork instead of selfies, allowing users to find new matches through mutual creative interests.
 
 <p align="center">
