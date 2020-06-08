@@ -55,7 +55,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.static('static'));
-app.use(session({ secret: 'ikwilkaas', resave: true, saveUnitialized: false }));
+app.use(session({ secret: 'ikwilkaas', resave: true, saveUninitialized: false }));
 app.set('view engine', 'ejs');
 app.set('views', 'view');
 
