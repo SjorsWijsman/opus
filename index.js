@@ -31,7 +31,6 @@ function getUserInfo(req, callback) {
   function done(err, data) {
     if (err) throw err;
     else {
-      console.log(data);
       callback(data[0]);
     }
   };
@@ -56,7 +55,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.static('static'));
-app.use(session({ secret: 'ikwilkaas' }));
+app.use(session({ secret: 'ikwilkaas', resave: true, saveUnitialized: false }));
 app.set('view engine', 'ejs');
 app.set('views', 'view');
 
@@ -92,7 +91,6 @@ function discover(req, res) {
   getUserInfo(req, function(result) {
     let page = 'discover.ejs';
     let pageTitle = 'Discover';
-    console.log(result);
     res.render(page, {
       title: pageTitle,
       userInfo: result,
